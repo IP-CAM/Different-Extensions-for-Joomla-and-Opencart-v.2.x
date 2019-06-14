@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Opencart News Sitemap</name>
+    <code>news_sitemap</code>
+    <version>1.0</version>
+    <author>alexwaha</author>
+    <link>https://oc-help.com</link>
+<file path="catalog/model/catalog/news.php">
+    <operation>
+      <search><![CDATA[public function getTotalNews() {]]></search>
+      <add position="before"><![CDATA[
+      		public function getAllNews() {
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "news n LEFT JOIN " . DB_PREFIX . "news_description nd ON (n.news_id = nd.news_id) LEFT JOIN " . DB_PREFIX . "news_to_store n2s ON (n.news_id = n2s.news_id) WHERE nd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND n2s.store_id = '" . (int)$this->config->get('config_store_id') . "' AND n.status = '1' ORDER BY n.date_added DESC");
+
+		return $query->rows;
+	}]]></add>
+    </operation>
+  </file>
+  <file path="catalog/controller/information/sitemap.php">
+    <operation>
+      <search><![CDATA[$data['text_contact'] = $this->language->get('text_contact');]]></search>
+      <add position="after"><![CDATA[$data['text_news'] = $this->language->get('text_news');]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[$data['contact'] = $this->url->link('information/contact');]]></search>
+      <add position="after"><![CDATA[$data['news_list'] = $this->url->link('information/news');]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[$this->load->model('catalog/information');]]></search>
+      <add position="before"><![CDATA[		
+      	$this->load->model('catalog/news');
+
+		$data['news_story'] = array();
+
+		$all_news = $this->model_catalog_news->getAllNews();
+
+		foreach ($all_news as $news) {
+			$data['news_story'][] = array(
+				'title' => $news['title'],
+				'href'  => $this->url->link('information/news/info', 'news_id=' . $news['news_id'])
+			);
+		}]]></add>
+    </operation>
+  </file>
+  <file path="catalog/language/russian/information/sitemap.php">
+    <operation>
+      <search><![CDATA[$_['text_contact']]]></search>
+      <add position="before"><![CDATA[$_['text_news'] 	   = 'Новости';]]></add>
+    </operation>
+  </file>
+  <file path="catalog/view/theme/*/template/information/sitemap.tpl">
+    <operation>
+      <search><![CDATA[<li><?php echo $text_information; ?>]]></search>
+      <add position="before"><![CDATA[      
+      <li><a href="<?php echo $news_list; ?>"><?php echo $text_news; ?></a>
+	      <ul>
+	        <?php foreach ($news_story as $news) { ?>
+	        <li><a href="<?php echo $news['href']; ?>"><?php echo $news['title']; ?></a></li>
+	        <?php } ?>
+	      </ul>
+      </li>]]></add>
+    </operation>
+  </file>
+  <file path="catalog/controller/feed/google_sitemap.php">
+    <operation>
+      <search><![CDATA[$this->load->model('catalog/information');]]></search>
+      <add position="before"><![CDATA[
+      		$this->load->model('catalog/news');
+
+				$output .= '<url>';
+				$output .= '<loc>' . $this->url->link('information/news') . '</loc>';
+				$output .= '<changefreq>weekly</changefreq>';
+				$output .= '<priority>0.3</priority>';
+				$output .= '</url>';
+
+			$all_news = $this->model_catalog_news->getAllNews();
+
+			foreach ($all_news as $news) {
+				$output .= '<url>';
+				$output .= '<loc>' . $this->url->link('information/news/info', 'news_id=' . $news['news_id']) . '</loc>';
+				$output .= '<changefreq>weekly</changefreq>';
+				$output .= '<priority>0.6</priority>';
+				$output .= '</url>';
+			}
+			]]></add>
+    </operation>
+  </file>
+</modification>

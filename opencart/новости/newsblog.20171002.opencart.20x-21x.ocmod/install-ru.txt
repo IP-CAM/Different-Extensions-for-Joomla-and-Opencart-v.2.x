@@ -1,0 +1,35 @@
+# Автоматическая установка (OCMOD)
+-------------------------------------------------------------------------
+# Внимание: у Вас должен быть корректно настроен OC2 Установщик дополнений OCMOD
+-------------------------------------------------------------------------
+## Установка
+-------------------------------------------------------------------------
+* В админ панели перейдите в Установщик дополнений OCMOD (/admin/index.php?route=extension/installer)
+* Загрузите newsblog.xxxxxxxx.opencart.xxxx.ocmod.zip,
+* Перейдите в "Дополнения / Менеджер дополнений" и нажмите кнопку "Обновить",
+* добавление новых категорий (/admin/index.php?route=newsblog/category),
+* добавление новых статей (/admin/index.php?route=newsblog/article),
+* добавление модуля (/admin/index.php?route=extension/module/install&extension=newsblog_articles),
+
+Категория на Вашем сайте: yourstore.com/index.php?route=newsblog/category&newsblog_category_id=ID
+или с seo_url: yourstore.com/category_seo_url
+
+Статья на Вашем сайте: yourstore.com/index.php?route=newsblog/article&newsblog_article_id=ID
+или с seo_url: yourstore.com/category_seo_url/article_seo_url
+
+-------------------------------------------------------------------------
+## Демо
+-------------------------------------------------------------------------
+http://opencart.nedorogoi-internet-magazin.ru/articles - Страница категории статей
+http://opencart.nedorogoi-internet-magazin.ru/articles/article-with-images - Страница статьи
+http://opencart.nedorogoi-internet-magazin.ru/ios_10_tips - Немного видоизмененный шаблон. Без ссылок на подробное описание и с использованием дополнительных полей (атрибутов)
+http://opencart.nedorogoi-internet-magazin.ru/map - Шаблон вывода адресов на карте Яндекс. Каждая точка создается как отдельный элемент. Координаты точки указываются в доп полях
+
+-------------------------------------------------------------------------
+## Документация
+-------------------------------------------------------------------------
+http://opencart.nedorogoi-internet-magazin.ru/newsblog
+
+-------------------------------------------------------------------------
+Если будут проблемы с установкой, либо вопросы и предложения - пишите на e-mail petr@netruxa.ru
+-------------------------------------------------------------------------
